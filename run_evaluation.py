@@ -39,25 +39,13 @@ class EvaluationRunner:
 
 
             # Import framework agent factory (reflecting new tree structure)
-            framework_module = __import__(f"frameworks.{framework_name}.{puzzle_name}.agent", fromlist=["make_agent"])
-            make_agent_func = framework_module.make_agent
+            framework_module = __import__(f"frameworks.{framework_name}.{puzzle_name}.agent", fromlist=["run_agent"])
+            run_agent_func = framework_module.run_agent
 
-            # Create agent
-            agent = make_agent_func(model_id)
 
-            # Run agent and validate result with checker
-            async def run_and_check():
-                # Try async .run, fallback to sync call
-                try:
-                    result = await agent.run("Find out the total number of fruits by calling the appropriate tools")
-                except AttributeError:
-                    result = agent("Find out the total number of fruits by calling the appropriate tools")
-                check_func(result)
-
-            await asyncio.wait_for(
-                run_and_check(),
-                timeout=config.TEST_TIMEOUT
-            )
+            # Create and run agent (await if coroutine)
+            result = await run_agent_func(model_id)
+            check_func(result)
 
             execution_time = time.time() - start_time
 

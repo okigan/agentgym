@@ -28,52 +28,42 @@ def _patched_map_tool_config(self, model_request_parameters):
     return tool_config
 
 
+
 def make_agent(model_id: str) -> Agent[AgentTestContext, FruitCountResponse]:
-    """Create a Pydantic AI agent with fruit counting tools.
-    
-    Args:
-        model_id: The AWS Bedrock model ID to use
-        
-    Returns:
-        Configured Pydantic AI agent
-    """
+    """Create a Pydantic AI agent with fruit counting tools."""
     logger.info(f"Creating Pydantic AI agent with model: {model_id}")
-
     model = EnhancedBedrockModel(model_name=model_id)
-
-    # Apply Meta Llama patch for toolChoice.any issue
     if "meta.llama" in model_id.lower() or "llama" in model_id.lower():
         logger.info(f"Applying Meta Llama patch for 'any'/'auto' tool calling for model: {model_id}")
         if hasattr(model, '_map_tool_config'):
             model._map_tool_config = _patched_map_tool_config.__get__(model, type(model))
-
     agent = Agent(
         model=model,
         deps_type=AgentTestContext,
         output_type=FruitCountResponse,
         system_prompt="""
         You are a fruit counting assistant. You MUST use the available tools to get fruit counts.
-
         When asked about fruit counts:
         1. Call relevant tools to get fruit count
         2. Respond ONLY with a valid JSON object in this exact format, and nothing else (no explanation, no extra text):
         {"fruit_count_by_color": {"orange": <orange_count>, "apple": <apple_count>}}
-
         Replace <orange_count> and <apple_count> with the actual numbers you get from the tools. 
         Do not include any text before or after the JSON. The response must be a single valid JSON object.
         """,
     )
-
-
     @agent.tool
     async def get_count_of_oranges_tool(ctx: RunContext[AgentTestContext]) -> int:
         """Get the current count of oranges in inventory."""
         return await get_count_of_oranges(ctx)
-
-
     @agent.tool
     async def get_count_of_apples_tool(ctx: RunContext[AgentTestContext]) -> int:
         """Get the current count of apples in inventory."""
         return await get_count_of_apples(ctx)
-
     return agent
+
+# --- Added for AgentGym runner ---
+async def run_agent(model_id: str):
+    """Create and run the agent for the given model_id."""
+    agent = make_agent(model_id)
+    prompt = "How many oranges and apples are there?"
+    return await agent.run(prompt, deps=AgentTestContext())

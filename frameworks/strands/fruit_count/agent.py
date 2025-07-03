@@ -44,53 +44,44 @@ def get_count_of_apples() -> int:
     return get_count_of_apples_sync()
 
 
+
 def make_agent(model_id: str) -> Agent:
-    """Create a Strands agent with fruit counting tools.
-    
-    Args:
-        model_id: The AWS Bedrock model ID to use
-        
-    Returns:
-        Configured Strands agent
-    """
+    """Create a Strands agent with fruit counting tools."""
     logger.info(f"Creating Strands agent with model: {model_id}")
-
-
-    # Create agent with tools passed during initialization
     logger.info("🦙 Using non-streaming mode for model to support tool use")
-    
     try:
         from strands.models.bedrock import BedrockModel
-        
         bedrock_model = BedrockModel(
             model_id=model_id,
-            streaming=False  # Disable streaming for better tool use compatibility
+            streaming=False
         )
-        
         agent = Agent(
             model=bedrock_model,
             tools=[get_count_of_oranges, get_count_of_apples],
             system_prompt="""
             You are a fruit counting assistant. You MUST use the available tools to get fruit counts.
-
             When asked about fruit counts:
             1. Call relevant tools to get fruit count
             2. Respond ONLY with a valid JSON object in this exact format, and nothing else (no explanation, no extra text):
             {"fruit_count_by_color": {"orange": <orange_count>, "apple": <apple_count>}}
-
             Replace <orange_count> and <apple_count> with the actual numbers you get from the tools. Do not include any text before or after the JSON. The response must be a single valid JSON object.
-
             You have access to these tools:
             - get_count_of_oranges: Get current orange inventory count
             - get_count_of_apples: Get current apple inventory count
             """,
         )
-        
     except ImportError as e:
         logger.error(f"Strands framework not available: {e}")
         raise ImportError("Strands framework is required but not installed")
-    
     return agent
+
+# --- Added for AgentGym runner ---
+async def run_agent(model_id: str):
+    """Create and run the agent for the given model_id."""
+    agent = make_agent(model_id)
+    prompt = "How many oranges and apples are there?"
+    # Strands agents may not require asyncio for sync run
+    return agent(prompt)
 
 
 def get_context() -> AgentTestContext:
