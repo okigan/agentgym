@@ -2,6 +2,7 @@
 
 import json
 import logging
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any
@@ -9,6 +10,12 @@ from dataclasses import dataclass
 from jinja2 import Template
 
 logger = logging.getLogger(__name__)
+
+
+def redact_aws_account(s: str) -> str:
+    """Redact AWS account numbers in ARNs and similar strings."""
+    # Replace 12-digit numbers in ARNs with '***'
+    return re.sub(r'(arn:aws:bedrock:[^:]+:)(\d{12})(:inference-profile/)', r'\1***\3', s)
 
 
 @dataclass
@@ -63,10 +70,11 @@ Total evaluations: {{ total_runs }}
 {% for puzzle_name, results in organized_results.items() %}
 ### {{ puzzle_name | title }}
 
-| Framework | Model | Run 1 | Run 2 | Run 3 | Success Rate |
-|-----------|-------|-------|-------|-------|--------------|
+{% set max_runs = results.values() | map('length') | max %}
+| Framework | Model {% for i in range(1, max_runs+1) %}| Run {{ i }} {% endfor %}| Success Rate |
+|-----------|-------{% for i in range(1, max_runs+1) %}|-------{% endfor %}|--------------|
 {% for (framework, model), runs in results.items() -%}
-| {{ framework }} | {{ model }} | {{ status_emoji.get(runs[0], runs[0]) if runs|length > 0 else 'N/A' }} | {{ status_emoji.get(runs[1], runs[1]) if runs|length > 1 else 'N/A' }} | {{ status_emoji.get(runs[2], runs[2]) if runs|length > 2 else 'N/A' }} | {{ ((runs | select('equalto', 'Pass') | list | length) / (runs|length) * 100) | round(1) if runs else 0 }}% |
+| {{ framework }} | {{ model }} {% for i in range(max_runs) %}| {{ status_emoji.get(runs[i], runs[i]) if runs|length > i else 'N/A' }} {% endfor %}| {{ ((runs | select('equalto', 'Pass') | list | length) / (runs|length) * 100) | round(1) if runs else 0 }}% |
 {% endfor %}
 
 {% endfor %}
@@ -90,13 +98,29 @@ Total evaluations: {{ total_runs }}
         frameworks = agentgym_config.FRAMEWORKS
     except Exception:
         frameworks = []
+    # Redact AWS account numbers in organized_results and results
+    def redact_model_keys(organized):
+        out = {}
+        for puzzle, results in organized.items():
+            out[puzzle] = {}
+            for (fw, model), v in results.items():
+                out[puzzle][(fw, redact_aws_account(model))] = v
+        return out
+
+    redacted_organized = redact_model_keys(organized_results)
+    redacted_results = []
+    for r in summary.results:
+        redacted_results.append(type(r)(
+            **{**r.__dict__, 'model': redact_aws_account(r.model)}
+        ))
+
     template = Template(template_str)
     content = template.render(
         timestamp=summary.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
         total_runs=summary.total_runs,
-        organized_results=organized_results,
+        organized_results=redacted_organized,
         frameworks=frameworks,
-        results=summary.results
+        results=redacted_results
     )
     output_path.write_text(content)
     logger.info(f"📊 Markdown report generated: {output_path}")
@@ -112,7 +136,14 @@ def generate_json_report(summary: EvaluationSummary, output_path: Path) -> None:
             out[puzzle] = {f"{fw}|{model}": v for (fw, model), v in results.items()}
         return out
 
-    organized_results = tuple_key_to_str_key(collect_results(summary.results))
+    # Redact AWS account numbers in models for JSON as well
+    def redact_model_keys(organized):
+        out = {}
+        for puzzle, results in organized.items():
+            out[puzzle] = {f"{fw}|{redact_aws_account(model)}": v for (fw, model), v in results.items()}
+        return out
+
+    organized_results = redact_model_keys(collect_results(summary.results))
     data = {
         "timestamp": summary.timestamp.isoformat(),
         "total_runs": summary.total_runs,
@@ -120,7 +151,7 @@ def generate_json_report(summary: EvaluationSummary, output_path: Path) -> None:
             {
                 "puzzle": r.puzzle,
                 "framework": r.framework,
-                "model": r.model,
+                "model": redact_aws_account(r.model),
                 "run_number": r.run_number,
                 "status": r.status,
                 "error_message": r.error_message,

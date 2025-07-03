@@ -16,7 +16,7 @@ AgentGym is a Python framework for evaluating AI agent frameworks (e.g., Pydanti
 - **Dependency Management**: Use `uv` exclusively (`uv add <package>`, `uv sync`, `uv run <cmd>`).
 - **Running Evaluations**: Use `make run` or `uv run python run_evaluation.py`.
 - **Testing**: Place framework-specific tests in `tests/`, run with `uv run pytest`.
-- **AWS Setup**: Requires valid AWS credentials (`AWS_DEFAULT_REGION`, `AWS_PROFILE`) for Bedrock model access.
+- **AWS Setup**: Requires valid AWS credentials (`AWS_PROFILE`) for Bedrock model access.
 
 ## Patterns & Conventions
 - **Puzzle Structure**: Each puzzle owns its tools and checker. Example tool:
