@@ -11,8 +11,8 @@ PUZZLES = [
 # Frameworks to test
 FRAMEWORKS = [
     "pydantic_ai",
-    "strands",
-    # Add more frameworks here as they're implemented
+    "pydantic_ai_enhanced",
+    # "strands",
 ]
 
 @lru_cache(maxsize=1)
@@ -32,7 +32,7 @@ MODELS = [
 ]
 
 # Number of runs per (puzzle, framework, model) combination
-NUM_RUNS = 3
+NUM_RUNS = 1
 
 # Timeout settings (in seconds)
 TEST_TIMEOUT = 120

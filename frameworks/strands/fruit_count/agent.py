@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class AgentTestContext:
     """Context for tracking tool calls during testing."""
     def __init__(self):
-        self.called_tools: list[str] = []
+        pass
 
 
 # Global context for tracking tool calls in Strands
@@ -28,7 +28,6 @@ def get_count_of_oranges() -> int:
     Returns:
         int: The current number of oranges in inventory (always 25 for testing)
     """
-    test_context.called_tools.append("get_count_of_oranges")
     return get_count_of_oranges_sync()
 
 
@@ -42,7 +41,6 @@ def get_count_of_apples() -> int:
     Returns:
         int: The current number of apples in inventory (always 30 for testing)
     """
-    test_context.called_tools.append("get_count_of_apples")
     return get_count_of_apples_sync()
 
 
@@ -57,8 +55,6 @@ def make_agent(model_id: str) -> Agent:
     """
     logger.info(f"Creating Strands agent with model: {model_id}")
 
-    # Clear the global context for fresh evaluation
-    test_context.called_tools.clear()
 
     # Create agent with tools passed during initialization
     logger.info("🦙 Using non-streaming mode for model to support tool use")

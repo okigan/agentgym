@@ -2,7 +2,7 @@
 
 import logging
 from pydantic_ai import Agent, RunContext
-from pydantic_ai.models.bedrock import BedrockConverseModel
+from ..enhanced.enhanced_bedrock_model import EnhancedBedrockModel
 from puzzles.fruit_count.tools import get_count_of_oranges, get_count_of_apples
 from puzzles.fruit_count.checker import FruitCountResponse
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class AgentTestContext:
     """Context for tracking tool calls during testing."""
     def __init__(self):
-        self.called_tools: list[str] = []
+        pass
 
 
 def _patched_map_tool_config(self, model_request_parameters):
@@ -39,18 +39,18 @@ def make_agent(model_id: str) -> Agent[AgentTestContext, FruitCountResponse]:
     """
     logger.info(f"Creating Pydantic AI agent with model: {model_id}")
 
-    model = BedrockConverseModel(model_name=model_id)
+    model = EnhancedBedrockModel(model_name=model_id)
 
     # Apply Meta Llama patch for toolChoice.any issue
     if "meta.llama" in model_id.lower() or "llama" in model_id.lower():
-        logger.info(f"Applying Meta Llama patch for model: {model_id}")
+        logger.info(f"Applying Meta Llama patch for 'any'/'auto' tool calling for model: {model_id}")
         if hasattr(model, '_map_tool_config'):
             model._map_tool_config = _patched_map_tool_config.__get__(model, type(model))
 
     agent = Agent(
         model=model,
         deps_type=AgentTestContext,
-        result_type=FruitCountResponse,
+        output_type=FruitCountResponse,
         system_prompt="""
         You are a fruit counting assistant. You MUST use the available tools to get fruit counts.
 
@@ -59,26 +59,21 @@ def make_agent(model_id: str) -> Agent[AgentTestContext, FruitCountResponse]:
         2. Respond ONLY with a valid JSON object in this exact format, and nothing else (no explanation, no extra text):
         {"fruit_count_by_color": {"orange": <orange_count>, "apple": <apple_count>}}
 
-        Replace <orange_count> and <apple_count> with the actual numbers you get from the tools. Do not include any text before or after the JSON. The response must be a single valid JSON object.
+        Replace <orange_count> and <apple_count> with the actual numbers you get from the tools. 
+        Do not include any text before or after the JSON. The response must be a single valid JSON object.
         """,
     )
+
 
     @agent.tool
     async def get_count_of_oranges_tool(ctx: RunContext[AgentTestContext]) -> int:
         """Get the current count of oranges in inventory."""
-        if getattr(ctx, "deps", None) is not None and hasattr(ctx.deps, "called_tools"):
-            ctx.deps.called_tools.append("get_count_of_oranges")
-        else:
-            logger.warning("No deps context or called_tools for get_count_of_oranges_tool")
         return await get_count_of_oranges(ctx)
+
 
     @agent.tool
     async def get_count_of_apples_tool(ctx: RunContext[AgentTestContext]) -> int:
         """Get the current count of apples in inventory."""
-        if getattr(ctx, "deps", None) is not None and hasattr(ctx.deps, "called_tools"):
-            ctx.deps.called_tools.append("get_count_of_apples")
-        else:
-            logger.warning("No deps context or called_tools for get_count_of_apples_tool")
         return await get_count_of_apples(ctx)
 
     return agent

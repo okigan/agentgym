@@ -37,8 +37,9 @@ class EvaluationRunner:
             checker_module = __import__(f"puzzles.{puzzle_name}.checker", fromlist=["check"])
             check_func = checker_module.check
 
-            # Import framework agent factory
-            framework_module = __import__(f"frameworks.{framework_name}.agent", fromlist=["make_agent"])
+
+            # Import framework agent factory (reflecting new tree structure)
+            framework_module = __import__(f"frameworks.{framework_name}.{puzzle_name}.agent", fromlist=["make_agent"])
             make_agent_func = framework_module.make_agent
 
             # Create agent

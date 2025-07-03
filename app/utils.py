@@ -10,9 +10,13 @@ def setup_aws_environment(profile: str | None = None):
 
 def setup_logging(level: int = logging.INFO):
     """Configure logging for the application."""
+    # Remove all handlers associated with the root logger to ensure correct line numbers
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
     logging.basicConfig(
         level=level,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        format="%(asctime)s - %(name)s(%(lineno)d) - %(levelname)s - %(message)s",
+        force=True
     )
     
     # Configure specific loggers
