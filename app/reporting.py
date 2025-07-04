@@ -95,7 +95,7 @@ Total evaluations: {{ total_runs }}
     # Get frameworks from config (import here to avoid circular import)
     try:
         import config as agentgym_config
-        frameworks = agentgym_config.FRAMEWORKS
+        frameworks = [framework for combo in agentgym_config.FRAMEWORK_MODEL_COMBINATIONS for framework in combo["frameworks"]]
     except Exception:
         frameworks = []
     # Redact AWS account numbers in organized_results and results

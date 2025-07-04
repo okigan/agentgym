@@ -4,5 +4,5 @@ update-readme:
 install:
 	uv sync
 
-run:
+run_evaluation:
 	uv run run_evaluation.py

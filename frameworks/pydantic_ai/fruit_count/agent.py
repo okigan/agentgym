@@ -36,6 +36,7 @@ def make_agent(model_id: str) -> Agent[AgentTestContext, FruitCountResponse]:
         logger.info(f"Applying Meta Llama patch for 'any'/'auto' tool calling for model: {model_id}")
         if hasattr(model, '_map_tool_config'):
             model._map_tool_config = _patched_map_tool_config.__get__(model, type(model))
+
     agent = Agent(
         model=model,
         deps_type=AgentTestContext,

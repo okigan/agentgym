@@ -23,11 +23,17 @@ class EvaluationRunner:
         self, 
         puzzle_name: str, 
         framework_name: str, 
-        model_id: str, 
+        model_config, 
         run_number: int
     ) -> EvaluationResult:
         """Run a single evaluation and return the result."""
         
+        # Extract model identifier for logging
+        if isinstance(model_config, dict):
+            model_id = model_config.get("name", "custom_endpoint")
+        else:
+            model_id = model_config
+            
         logger.info(f"🚀 Running {puzzle_name}/{framework_name}/{model_id}/run_{run_number}")
         
         start_time = time.time()
@@ -37,14 +43,12 @@ class EvaluationRunner:
             checker_module = __import__(f"puzzles.{puzzle_name}.checker", fromlist=["check"])
             check_func = checker_module.check
 
-
             # Import framework agent factory (reflecting new tree structure)
             framework_module = __import__(f"frameworks.{framework_name}.{puzzle_name}.agent", fromlist=["run_agent"])
             run_agent_func = framework_module.run_agent
 
-
             # Create and run agent (await if coroutine)
-            result = await run_agent_func(model_id)
+            result = await run_agent_func(model_config)
             check_func(result)
 
             execution_time = time.time() - start_time
@@ -82,11 +86,14 @@ class EvaluationRunner:
         logger.info("🎯 Starting AgentGym evaluation run")
         logger.info("📊 Configuration:")
         logger.info(f"   Puzzles: {config.PUZZLES}")
-        logger.info(f"   Frameworks: {config.FRAMEWORKS}")
-        logger.info(f"   Models: {len(config.MODELS)} models")
-        logger.info(f"   Runs per combination: {config.NUM_RUNS}")
+        logger.info(f"   Framework-model combinations: {len(config.FRAMEWORK_MODEL_COMBINATIONS)}")
         
-        total_evaluations = len(config.PUZZLES) * len(config.FRAMEWORKS) * len(config.MODELS) * config.NUM_RUNS
+        # Calculate total evaluations from explicit combinations
+        total_evaluations = 0
+        for puzzle in config.PUZZLES:
+            for combo in config.FRAMEWORK_MODEL_COMBINATIONS:
+                total_evaluations += len(combo["frameworks"]) * len(combo["models"]) * config.NUM_RUNS
+        
         logger.info(f"   Total evaluations: {total_evaluations}")
         
         # Setup AWS environment using AWS_PROFILE from environment
@@ -98,18 +105,19 @@ class EvaluationRunner:
         
         # Run all combinations
         for puzzle in config.PUZZLES:
-            for framework in config.FRAMEWORKS:
-                for model in config.MODELS:
-                    for run_num in range(1, config.NUM_RUNS + 1):
-                        current_eval += 1
-                        
-                        logger.info(f"📈 Progress: {current_eval}/{total_evaluations}")
-                        
-                        result = await self.run_single_evaluation(
-                            puzzle, framework, model, run_num
-                        )
-                        
-                        self.results.append(result)
+            for combo in config.FRAMEWORK_MODEL_COMBINATIONS:
+                for framework in combo["frameworks"]:
+                    for model in combo["models"]:
+                        for run_num in range(1, config.NUM_RUNS + 1):
+                            current_eval += 1
+                            
+                            logger.info(f"📈 Progress: {current_eval}/{total_evaluations}")
+                            
+                            result = await self.run_single_evaluation(
+                                puzzle, framework, model, run_num
+                            )
+                            
+                            self.results.append(result)
         
         # Create summary
         summary = EvaluationSummary(
