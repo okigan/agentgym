@@ -25,11 +25,11 @@ AWS_PROFILE=<your aws profile> make run
 <!-- INCLUDE reports/latest.md -->
 # AgentGym Evaluation Results
 
-Generated on: 2025-07-03 16:21:39
+Generated on: 2025-07-04 00:29:02
 
 ## Summary
 
-Total evaluations: 120
+Total evaluations: 80
 
 ## Results by Puzzle
 
@@ -38,20 +38,24 @@ Total evaluations: 120
 ### Fruit_count
 
 
-| Framework | Model | Run 1 | Run 2 | Run 3 | Run 4 | Run 5 | Run 6 | Run 7 | Run 8 | Run 9 | Run 10 | Success Rate |
-|-----------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|-------|--------------|
-| pydantic_ai | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
-| pydantic_ai_enhanced | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
-| strands | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | 30.0% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| Framework | Model | Run 1 | Run 2 | Run 3 | Run 4 | Run 5 | Success Rate |
+|-----------|-------|-------|-------|-------|-------|-------|--------------|
+| raw_openai_api | qwen/qwen3-14b | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| raw_openai_api | gemma-3-12b-it  | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai_openai | qwen/qwen3-14b | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_openai | gemma-3-12b-it  | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_enhanced | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
+| strands | mistral.mistral-large-2407-v1:0 | ✅ | ❌ | ✅ | ✅ | ✅ | 80.0% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ✅ | ✅ | ✅ | ✅ | ✅ | 100.0% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | ❌ | ❌ | 0.0% |
 
 
 
@@ -59,335 +63,251 @@ Total evaluations: 120
 ## Detailed Results
 
 
+- **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 1: ✅
+
+  - Time: 20.29s
+
+- **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 2: ✅
+
+  - Time: 18.75s
+
+- **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 3: ✅
+
+  - Time: 20.61s
+
+- **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 4: ✅
+
+  - Time: 19.46s
+
+- **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 5: ✅
+
+  - Time: 20.27s
+
+- **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 1: ✅
+
+  - Time: 11.67s
+
+- **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 2: ✅
+
+  - Time: 11.28s
+
+- **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 3: ✅
+
+  - Time: 11.32s
+
+- **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 4: ✅
+
+  - Time: 11.17s
+
+- **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 5: ✅
+
+  - Time: 11.29s
+
+- **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 1: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.52s
+
+- **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 2: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.03s
+
+- **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 3: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.03s
+
+- **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 4: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.04s
+
+- **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 5: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.02s
+
+- **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 1: ✅
+
+  - Time: 11.54s
+
+- **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 2: ✅
+
+  - Time: 8.01s
+
+- **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 3: ✅
+
+  - Time: 7.99s
+
+- **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 4: ✅
+
+  - Time: 8.1s
+
+- **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 5: ✅
+
+  - Time: 7.97s
+
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 1: ✅
 
-  - Time: 4.54s
+  - Time: 4.07s
 
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 2: ✅
 
-  - Time: 3.82s
+  - Time: 3.93s
 
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 3: ✅
 
-  - Time: 3.89s
+  - Time: 3.74s
 
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 4: ✅
 
-  - Time: 3.78s
+  - Time: 3.61s
 
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 5: ✅
 
-  - Time: 3.77s
-
-- **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 6: ✅
-
-  - Time: 3.73s
-
-- **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 7: ✅
-
-  - Time: 3.75s
-
-- **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 8: ✅
-
-  - Time: 4.08s
-
-- **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 9: ✅
-
-  - Time: 3.73s
-
-- **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 10: ✅
-
-  - Time: 4.27s
+  - Time: 3.76s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.9s
+  - Time: 2.74s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.8s
+  - Time: 2.9s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.94s
+  - Time: 3.05s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 4: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 3.24s
+  - Error: Total fruit count 0 does not match expected value 55
+  - Time: 2.9s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 5: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.93s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 6: ❌
-  - Error: Total fruit count 0 does not match expected value 55
-  - Time: 2.86s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 7: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.79s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 8: ❌
-  - Error: Total fruit count 0 does not match expected value 55
-  - Time: 2.84s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 9: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.86s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 10: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.83s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.2s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.23s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.12s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 4: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.24s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 5: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.23s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 6: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.21s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 7: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.11s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 8: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.36s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 9: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.11s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 10: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.21s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.33s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.08s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.06s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 4: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 1.92s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 5: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.06s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 6: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.09s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 7: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 1.96s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 8: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.1s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 9: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.34s
-
-- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 10: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.25s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 1: ✅
-
-  - Time: 4.18s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 2: ✅
-
-  - Time: 3.76s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 3: ✅
-
-  - Time: 3.85s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 4: ✅
-
-  - Time: 3.86s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 5: ✅
-
-  - Time: 3.8s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 6: ✅
-
-  - Time: 4.17s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 7: ✅
-
-  - Time: 3.71s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 8: ✅
-
-  - Time: 3.56s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 9: ✅
-
-  - Time: 3.83s
-
-- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 10: ✅
-
-  - Time: 3.87s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.76s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ❌
   - Error: Total fruit count 0 does not match expected value 55
   - Time: 2.75s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ❌
-  - Error: Total fruit count 0 does not match expected value 55
-  - Time: 2.83s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 4: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.81s
+  - Time: 2.26s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 5: ❌
-  - Error: Total fruit count 0 does not match expected value 55
-  - Time: 2.81s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 6: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.81s
+  - Time: 2.74s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 7: ❌
-  - Error: Total fruit count 0 does not match expected value 55
-  - Time: 2.79s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 8: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.95s
+  - Time: 2.3s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 9: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 4: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 3.49s
+  - Time: 2.23s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 10: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 5: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.85s
+  - Time: 2.33s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.21s
+  - Time: 2.4s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.22s
+  - Time: 1.91s
 
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ❌
   - Error: Exceeded maximum retries (1) for result validation
   - Time: 2.09s
 
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 4: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.03s
+
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 5: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.18s
+
+- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 1: ✅
+
+  - Time: 3.57s
+
+- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 2: ✅
+
+  - Time: 3.73s
+
+- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 3: ✅
+
+  - Time: 4.15s
+
+- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 4: ✅
+
+  - Time: 3.8s
+
+- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 5: ✅
+
+  - Time: 3.65s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.81s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.85s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.85s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 4: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.74s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 5: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.92s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.24s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.14s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.26s
+
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 4: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.2s
+  - Time: 2.18s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 5: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.17s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 6: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.13s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 7: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.12s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 8: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.16s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 9: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.23s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 10: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.13s
+  - Time: 2.18s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.06s
+  - Time: 2.03s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 1.94s
+  - Time: 1.93s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 1.9s
+  - Time: 2.31s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 4: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.02s
+  - Time: 2.28s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 5: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.02s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 6: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.27s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 7: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.06s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 8: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.08s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 9: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 1.88s
-
-- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 10: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.06s
+  - Time: 2.49s
 
 - **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 1: ✅
 
-  - Time: 6.34s
+  - Time: 3.46s
 
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 2: ✅
-
-  - Time: 3.26s
-
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 3: ❌
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 2: ❌
   - Error: Invalid agent output: Could not parse response: ```json
 {
   "fruit_count_by_color": {
@@ -397,203 +317,79 @@ Total evaluations: 120
 }
 ```
 
-  - Time: 4.97s
+  - Time: 4.98s
 
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 4: ❌
-  - Error: Invalid agent output: Could not parse response: ```json
-{
-  "fruit_count_by_color": {
-    "orange": 25,
-    "apple": 30
-  }
-}
-```
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 3: ✅
 
-  - Time: 3.63s
+  - Time: 3.25s
 
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 5: ❌
-  - Error: Invalid agent output: Could not parse response: ```json
-{
-  "fruit_count_by_color": {
-    "orange": 25,
-    "apple": 30
-  }
-}
-```
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 4: ✅
 
-  - Time: 5.18s
+  - Time: 3.37s
 
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 6: ❌
-  - Error: Invalid agent output: Could not parse response: ```json
-{
-  "fruit_count_by_color": {
-    "orange": 25,
-    "apple": 30
-  }
-}
-```
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 5: ✅
 
-  - Time: 4.05s
-
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 7: ❌
-  - Error: Invalid agent output: Could not parse response: ```json
-{
-  "fruit_count_by_color": {
-    "orange": 25,
-    "apple": 30
-  }
-}
-```
-
-  - Time: 4.81s
-
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 8: ❌
-  - Error: Invalid agent output: Could not parse response: ```json
-{
-  "fruit_count_by_color": {
-    "orange": 25,
-    "apple": 30
-  }
-}
-```
-
-  - Time: 4.11s
-
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 9: ❌
-  - Error: Invalid agent output: Could not parse response: ```json
-{
-  "fruit_count_by_color": {
-    "orange": 25,
-    "apple": 30
-  }
-}
-```
-
-  - Time: 3.78s
-
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 10: ✅
-
-  - Time: 3.92s
+  - Time: 6.05s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ✅
 
-  - Time: 2.59s
+  - Time: 2.67s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ✅
 
-  - Time: 2.56s
+  - Time: 2.78s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ✅
 
-  - Time: 2.73s
+  - Time: 2.78s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 4: ✅
 
-  - Time: 2.72s
+  - Time: 2.77s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 5: ✅
 
-  - Time: 2.64s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 6: ✅
-
-  - Time: 2.63s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 7: ✅
-
-  - Time: 2.64s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 8: ✅
-
-  - Time: 2.32s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 9: ✅
-
-  - Time: 2.64s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 10: ✅
-
-  - Time: 2.62s
+  - Time: 2.77s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ✅
 
-  - Time: 2.55s
+  - Time: 3.02s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ✅
 
-  - Time: 4.23s
+  - Time: 2.32s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ✅
 
-  - Time: 2.23s
+  - Time: 2.2s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 4: ✅
 
-  - Time: 2.41s
+  - Time: 2.78s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 5: ✅
 
-  - Time: 2.38s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 6: ✅
-
-  - Time: 2.36s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 7: ✅
-
-  - Time: 2.32s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 8: ✅
-
   - Time: 2.41s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 9: ✅
-
-  - Time: 2.38s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 10: ✅
-
-  - Time: 2.32s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
   - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.47s
+  - Time: 1.49s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
   - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.46s
+  - Time: 1.28s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ❌
   - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.54s
+  - Time: 1.27s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 4: ❌
   - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.5s
+  - Time: 1.4s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 5: ❌
   - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.5s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 6: ❌
-  - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.53s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 7: ❌
-  - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.34s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 8: ❌
-  - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.39s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 9: ❌
-  - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.36s
-
-- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 10: ❌
-  - Error: Invalid agent output: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-  - Time: 1.32s
+  - Time: 1.96s
 
 
 ---
