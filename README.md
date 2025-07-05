@@ -13,13 +13,83 @@ AgentGym allows you to systematically evaluate how different agent frameworks (l
 - **Puzzle-Based Evaluation**: Structured tasks with validation
 - **Stochastic Testing**: Multiple runs per combination to account for model variance
 - **GitHub Pages Reports**: Markdown output suitable for publishing
+- **Observability**: Built-in monitoring and tracing with Logfire
+
+## Setup
+
+### Prerequisites
+
+- Python 3.11+
+- AWS credentials configured
+- Optional: Logfire account for monitoring
+
+### Installation
+
+```bash
+make install
+```
+
+### Environment Configuration
+
+Copy the example environment file and configure your settings:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your configuration:
+
+```bash
+# AWS Configuration
+AWS_PROFILE=your-aws-profile
+AWS_REGION=us-west-2
+
+# Logfire Configuration (optional)
+# Get your token from https://logfire.pydantic.dev/
+LOGFIRE_TOKEN=your-logfire-token
+
+# Development Settings
+AGENTGYM_ENVIRONMENT=development
+AGENTGYM_SERVICE_NAME=agentgym-evaluation
+```
 
 ## Run evaluation
 
-```
-make install
+```bash
 AWS_PROFILE=<your aws profile> make run
 ```
+
+## Monitoring with Logfire
+
+AgentGym includes built-in observability and monitoring using [Logfire](https://logfire.pydantic.dev/). This provides:
+
+- **Real-time monitoring**: Track evaluation progress and performance
+- **Distributed tracing**: See detailed execution flow for each evaluation
+- **Error tracking**: Capture and analyze failures
+- **Performance metrics**: Monitor execution times and success rates
+
+### Setting up Logfire
+
+1. Create a free account at [https://logfire.pydantic.dev/](https://logfire.pydantic.dev/)
+2. Create a new project
+3. Copy your project token
+4. Set the `LOGFIRE_TOKEN` environment variable
+
+```bash
+export LOGFIRE_TOKEN=your-logfire-token
+```
+
+Or add it to your `.env` file.
+
+### Logfire Features
+
+- **Evaluation tracking**: Each evaluation run is traced with spans
+- **Performance monitoring**: Execution times and success rates
+- **Error analysis**: Detailed error messages and stack traces
+- **Resource monitoring**: Track AWS Bedrock API calls
+- **Console output**: Local development feedback
+
+If no Logfire token is provided, the system will still work but only provide console logging.
 
 
 <!-- INCLUDE reports/latest.md -->
@@ -363,6 +433,7 @@ Total evaluations: 64
 - **boto3**: AWS Bedrock integration
 - **pytest**: Testing framework
 - **jinja2**: Report templating
+- **logfire**: Observability and monitoring
 
 ## AWS Bedrock Models
 

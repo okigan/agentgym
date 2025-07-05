@@ -33,12 +33,12 @@ FRAMEWORK_MODEL_COMBINATIONS = [
                 "base_url": "http://127.0.0.1:1234/v1",
                 "model": "qwen/qwen3-14b"
             },
-            {
-                "type": "custom_endpoint",
-                "name": "gemma-3-12b-it ", 
-                "base_url": "http://127.0.0.1:1234/v1",
-                "model": "gemma-3-12b-it"
-            },
+            # {
+            #     "type": "custom_endpoint",
+            #     "name": "gemma-3-12b-it ", 
+            #     "base_url": "http://127.0.0.1:1234/v1",
+            #     "model": "gemma-3-12b-it"
+            # },
         ]
     },
     {
