@@ -66,7 +66,7 @@ Total evaluations: {{ total_runs }}
 
 ## Results by Puzzle
 
-{% set status_emoji = {'Pass': '✅', 'Fail': '❌'} %}
+{% set status_emoji = {'Pass': '✅', 'Fail': '❌', 'Not Available': '⚪'} %}
 {% for puzzle_name, results in organized_results.items() %}
 ### {{ puzzle_name | title }}
 
@@ -74,7 +74,7 @@ Total evaluations: {{ total_runs }}
 | Framework | Model {% for i in range(1, max_runs+1) %}| Run {{ i }} {% endfor %}| Success Rate |
 |-----------|-------{% for i in range(1, max_runs+1) %}|-------{% endfor %}|--------------|
 {% for (framework, model), runs in results.items() -%}
-| {{ framework }} | {{ model }} {% for i in range(max_runs) %}| {{ status_emoji.get(runs[i], runs[i]) if runs|length > i else 'N/A' }} {% endfor %}| {{ ((runs | select('equalto', 'Pass') | list | length) / (runs|length) * 100) | round(1) if runs else 0 }}% |
+| {{ framework }} | {{ model }} {% for i in range(max_runs) %}| {{ status_emoji.get(runs[i], runs[i]) if runs|length > i else 'N/A' }} {% endfor %}| {{ ((runs | select('equalto', 'Pass') | list | length) / (runs | select('ne', 'Not Available') | list | length) * 100) | round(1) if (runs | select('ne', 'Not Available') | list | length) > 0 else 'N/A' }}% |
 {% endfor %}
 
 {% endfor %}

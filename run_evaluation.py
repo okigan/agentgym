@@ -89,6 +89,62 @@ class EvaluationRunner:
                     execution_time=execution_time
                 )
 
+            except ModuleNotFoundError as e:
+                # Framework doesn't have implementation for this puzzle
+                if f"frameworks.{framework_name}.{puzzle_name}" in str(e):
+                    execution_time = time.time() - start_time
+                    
+                    logger.info(f"⚪ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - NOT AVAILABLE (no implementation)")
+                    
+                    # Log as not available to Logfire
+                    logfire.info(
+                        "Evaluation not available - no implementation",
+                        puzzle=puzzle_name,
+                        framework=framework_name,
+                        model=model_id,
+                        run_number=run_number,
+                        execution_time=execution_time,
+                        status="Not Available"
+                    )
+
+                    return EvaluationResult(
+                        puzzle=puzzle_name,
+                        framework=framework_name,
+                        model=model_id,
+                        run_number=run_number,
+                        status="Not Available",
+                        error_message=f"No implementation for {puzzle_name} puzzle",
+                        execution_time=execution_time
+                    )
+                else:
+                    # Different module not found error, treat as failure
+                    execution_time = time.time() - start_time
+                    error_msg = str(e)
+
+                    logger.error(f"❌ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - FAILED: {error_msg}")
+                    
+                    # Log error to Logfire
+                    logfire.error(
+                        "Evaluation failed",
+                        puzzle=puzzle_name,
+                        framework=framework_name,
+                        model=model_id,
+                        run_number=run_number,
+                        execution_time=execution_time,
+                        error=error_msg,
+                        status="Fail"
+                    )
+
+                    return EvaluationResult(
+                        puzzle=puzzle_name,
+                        framework=framework_name,
+                        model=model_id,
+                        run_number=run_number,
+                        status="Fail",
+                        error_message=error_msg,
+                        execution_time=execution_time
+                    )
+
             except Exception as e:
                 execution_time = time.time() - start_time
                 error_msg = str(e)
@@ -174,8 +230,10 @@ class EvaluationRunner:
         
         # Log final summary to Logfire
         passed_runs = len([r for r in self.results if r.status == "Pass"])
-        failed_runs = len(self.results) - passed_runs
-        success_rate = (passed_runs / len(self.results) * 100) if self.results else 0
+        failed_runs = len([r for r in self.results if r.status == "Fail"])
+        not_available_runs = len([r for r in self.results if r.status == "Not Available"])
+        testable_runs = passed_runs + failed_runs
+        success_rate = (passed_runs / testable_runs * 100) if testable_runs > 0 else 0
         
         # Calculate average execution time, handling None values
         execution_times = [r.execution_time for r in self.results if r.execution_time is not None]
@@ -186,6 +244,8 @@ class EvaluationRunner:
             total_runs=len(self.results),
             passed_runs=passed_runs,
             failed_runs=failed_runs,
+            not_available_runs=not_available_runs,
+            testable_runs=testable_runs,
             success_rate=success_rate,
             avg_execution_time=avg_execution_time
         )
@@ -202,14 +262,16 @@ class EvaluationRunner:
         # Calculate overall stats
         total_runs = summary.total_runs
         passed_runs = len([r for r in summary.results if r.status == "Pass"])
-        failed_runs = total_runs - passed_runs
-        success_rate = (passed_runs / total_runs * 100) if total_runs > 0 else 0
+        failed_runs = len([r for r in summary.results if r.status == "Fail"])
+        not_available_runs = len([r for r in summary.results if r.status == "Not Available"])
+        success_rate = (passed_runs / (passed_runs + failed_runs) * 100) if (passed_runs + failed_runs) > 0 else 0
         
         print("📊 Overall Statistics:")
         print(f"   Total runs: {total_runs}")
         print(f"   Passed: {passed_runs}")
         print(f"   Failed: {failed_runs}")
-        print(f"   Success rate: {success_rate:.1f}%")
+        print(f"   Not Available: {not_available_runs}")
+        print(f"   Success rate: {success_rate:.1f}% (excluding not available)")
         
         # Group by puzzle and framework
         puzzle_stats: Dict[str, Dict[str, list]] = {}
@@ -232,11 +294,25 @@ class EvaluationRunner:
             
             for framework_name, statuses in frameworks.items():
                 passes = statuses.count("Pass")
-                total = len(statuses)
-                rate = (passes / total * 100) if total > 0 else 0
+                fails = statuses.count("Fail")
+                testable_runs = passes + fails
+                rate = (passes / testable_runs * 100) if testable_runs > 0 else 0
                 
-                status_str = " | ".join(statuses)
-                print(f"   {framework_name:20} [{status_str}] ({rate:.0f}%)")
+                # Create status display with emoji
+                status_display = []
+                for status in statuses:
+                    if status == "Pass":
+                        status_display.append("✅")
+                    elif status == "Fail":
+                        status_display.append("❌")
+                    elif status == "Not Available":
+                        status_display.append("⚪")
+                    else:
+                        status_display.append("?")
+                
+                status_str = " | ".join(status_display)
+                rate_str = f"{rate:.0f}%" if testable_runs > 0 else "N/A"
+                print(f"   {framework_name:20} [{status_str}] ({rate_str})")
 
 
 async def main():
