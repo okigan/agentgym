@@ -43,9 +43,11 @@ def setup_logfire(
         logfire.configure(
             console=logfire.ConsoleOptions(colors='auto', verbose=False)
         )
-        logfire.instrument_pydantic_ai()
-        logfire.instrument_httpx()
         logfire.info("Logfire configured for local development (no token provided)")
+
+    logfire.instrument_pydantic_ai()
+    logfire.instrument_httpx()
+    logfire.instrument_aiohttp_client()
 
 
 def setup_logging(level: int = logging.INFO):
