@@ -70,7 +70,7 @@ def make_agent(model_config) -> Agent[AgentTestContext, FruitCountResponse]:
     agent = Agent(
         model=model,
         deps_type=AgentTestContext,
-        result_type=FruitCountResponse,
+        output_type=FruitCountResponse,
         system_prompt="""You are a fruit counting assistant. You MUST use the available tools to get fruit counts.
 When asked about fruit counts:
 1. Call relevant tools to get fruit count
@@ -98,7 +98,7 @@ async def run_agent(model_config):
     agent = make_agent(model_config)
     prompt = "How many oranges and apples are there?"
     result = await agent.run(prompt, deps=AgentTestContext())
-    return result.data
+    return result.output
 
 
 def get_context() -> AgentTestContext:
