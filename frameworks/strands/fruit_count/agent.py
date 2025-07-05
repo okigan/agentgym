@@ -1,11 +1,23 @@
 """Strands agent implementation."""
 
 import logging
+from pydantic import BaseModel, Field
 from strands import Agent, tool
 
 from puzzles.fruit_count.tools import get_count_of_oranges_sync, get_count_of_apples_sync
 
 logger = logging.getLogger(__name__)
+
+
+class FruitCountByColor(BaseModel):
+    """Fruit count organized by color/type."""
+    orange: int = Field(description="Number of oranges in inventory")
+    apple: int = Field(description="Number of apples in inventory")
+
+
+class FruitCountResponse(BaseModel):
+    """Complete fruit count response structure."""
+    fruit_count_by_color: FruitCountByColor = Field(description="Fruit counts organized by color/type")
 
 
 class AgentTestContext:
@@ -80,8 +92,22 @@ async def run_agent(model_id: str):
     """Create and run the agent for the given model_id."""
     agent = make_agent(model_id)
     prompt = "How many oranges and apples are there?"
-    # Strands agents may not require asyncio for sync run
-    return agent(prompt)
+    response = agent(prompt)
+
+    logger.info(f"Agent response: {response}")
+    
+    # Extract structured information with existing conversation context
+    result = agent.structured_output(FruitCountResponse, "Extract structured information")
+
+    logger.info(f"Structured output: {result}")
+    
+    # Convert the Pydantic model to a dict for compatibility with the existing system
+    return {
+        "fruit_count_by_color": {
+            "orange": result.fruit_count_by_color.orange,
+            "apple": result.fruit_count_by_color.apple
+        }
+    }
 
 
 def get_context() -> AgentTestContext:

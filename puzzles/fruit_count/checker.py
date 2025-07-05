@@ -44,11 +44,9 @@ def check(result: Any) -> None:
     except (ValidationError, Exception) as e:
         raise AssertionError(f"Invalid agent output: {e}")
 
-    # Validate the response
-    total_count = sum(response.fruit_count_by_color.values())
-    expected_total = 55  # 25 oranges + 30 apples
-    logger.info(f"📊 Total fruit count: {total_count}, expected: {expected_total}")
+    # Validate fruit_count_by_color structure and required keys/values
+    expected = {'orange': 25, 'apple': 30}
+    if response.fruit_count_by_color != expected:
+        raise AssertionError(f"fruit_count_by_color must match {expected}, got: {response.fruit_count_by_color}")
     logger.info(f"📊 Fruit breakdown: {response.fruit_count_by_color}")
-    if total_count != expected_total:
-        raise AssertionError(f"Total fruit count {total_count} does not match expected value {expected_total}")
     logger.info("✅ Fruit count puzzle passed check")
