@@ -5,6 +5,7 @@ from functools import lru_cache
 # Puzzles to evaluate
 PUZZLES = [
     "fruit_count",
+    "towers_of_hanoi",
     # Add more puzzles here as they're implemented
 ]
 
@@ -63,7 +64,7 @@ FRAMEWORK_MODEL_COMBINATIONS = [
 ]
 
 # Number of runs per (puzzle, framework, model) combination
-NUM_RUNS = 5
+NUM_RUNS = 2
 
 # Timeout settings (in seconds)
 TEST_TIMEOUT = 120
