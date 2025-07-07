@@ -38,46 +38,65 @@ class EvaluationRunner:
             
         logger.info(f"🚀 Running {puzzle_name}/{framework_name}/{model_id}/run_{run_number}")
         
-        # Start Logfire span for this evaluation
-        with logfire.span(
-            "evaluation_run",
-            puzzle=puzzle_name,
-            framework=framework_name,
-            model=model_id,
-            run_number=run_number
-        ):
-            start_time = time.time()
+        start_time = time.time()
+        
+        try:
+            # Import checker for this puzzle
+            checker_module = __import__(f"puzzles.{puzzle_name}.checker", fromlist=["check"])
+            check_func = checker_module.check
+
+            # Import framework agent factory (reflecting new tree structure)
+            framework_module = __import__(f"frameworks.{framework_name}.{puzzle_name}.agent", fromlist=["run_agent"])
+            run_agent_func = framework_module.run_agent
+
+            # Create and run agent (await if coroutine)
+            with logfire.span("agent_execution"):
+                result = await run_agent_func(model_config)
             
-            try:
-                # Import checker for this puzzle
-                checker_module = __import__(f"puzzles.{puzzle_name}.checker", fromlist=["check"])
-                check_func = checker_module.check
+            # Check result
+            with logfire.span("result_validation"):
+                check_func(result)
 
-                # Import framework agent factory (reflecting new tree structure)
-                framework_module = __import__(f"frameworks.{framework_name}.{puzzle_name}.agent", fromlist=["run_agent"])
-                run_agent_func = framework_module.run_agent
+            execution_time = time.time() - start_time
 
-                # Create and run agent (await if coroutine)
-                with logfire.span("agent_execution"):
-                    result = await run_agent_func(model_config)
-                
-                # Check result
-                with logfire.span("result_validation"):
-                    check_func(result)
+            logger.info(f"✅ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - PASSED ({execution_time:.2f}s)")
+            
+            # Log success to Logfire
+            logfire.info(
+                "Evaluation completed successfully",
+                puzzle=puzzle_name,
+                framework=framework_name,
+                model=model_id,
+                run_number=run_number,
+                execution_time=execution_time,
+                status="Pass"
+            )
 
+            return EvaluationResult(
+                puzzle=puzzle_name,
+                framework=framework_name,
+                model=model_id,
+                run_number=run_number,
+                status="Pass",
+                execution_time=execution_time
+            )
+
+        except ModuleNotFoundError as e:
+            # Framework doesn't have implementation for this puzzle
+            if f"frameworks.{framework_name}.{puzzle_name}" in str(e):
                 execution_time = time.time() - start_time
-
-                logger.info(f"✅ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - PASSED ({execution_time:.2f}s)")
                 
-                # Log success to Logfire
+                logger.info(f"⚪ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - NOT AVAILABLE (no implementation)")
+                
+                # Log as not available to Logfire
                 logfire.info(
-                    "Evaluation completed successfully",
+                    "Evaluation not available - no implementation",
                     puzzle=puzzle_name,
                     framework=framework_name,
                     model=model_id,
                     run_number=run_number,
                     execution_time=execution_time,
-                    status="Pass"
+                    status="Not Available"
                 )
 
                 return EvaluationResult(
@@ -85,67 +104,40 @@ class EvaluationRunner:
                     framework=framework_name,
                     model=model_id,
                     run_number=run_number,
-                    status="Pass",
+                    status="Not Available",
+                    error_message=f"No implementation for {puzzle_name} puzzle",
+                    execution_time=execution_time
+                )
+            else:
+                # Different module not found error, treat as failure
+                execution_time = time.time() - start_time
+                error_msg = str(e)
+
+                logger.error(f"❌ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - FAILED: {error_msg}")
+                
+                # Log error to Logfire
+                logfire.error(
+                    "Evaluation failed",
+                    puzzle=puzzle_name,
+                    framework=framework_name,
+                    model=model_id,
+                    run_number=run_number,
+                    execution_time=execution_time,
+                    error=error_msg,
+                    status="Fail"
+                )
+
+                return EvaluationResult(
+                    puzzle=puzzle_name,
+                    framework=framework_name,
+                    model=model_id,
+                    run_number=run_number,
+                    status="Fail",
+                    error_message=error_msg,
                     execution_time=execution_time
                 )
 
-            except ModuleNotFoundError as e:
-                # Framework doesn't have implementation for this puzzle
-                if f"frameworks.{framework_name}.{puzzle_name}" in str(e):
-                    execution_time = time.time() - start_time
-                    
-                    logger.info(f"⚪ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - NOT AVAILABLE (no implementation)")
-                    
-                    # Log as not available to Logfire
-                    logfire.info(
-                        "Evaluation not available - no implementation",
-                        puzzle=puzzle_name,
-                        framework=framework_name,
-                        model=model_id,
-                        run_number=run_number,
-                        execution_time=execution_time,
-                        status="Not Available"
-                    )
-
-                    return EvaluationResult(
-                        puzzle=puzzle_name,
-                        framework=framework_name,
-                        model=model_id,
-                        run_number=run_number,
-                        status="Not Available",
-                        error_message=f"No implementation for {puzzle_name} puzzle",
-                        execution_time=execution_time
-                    )
-                else:
-                    # Different module not found error, treat as failure
-                    execution_time = time.time() - start_time
-                    error_msg = str(e)
-
-                    logger.error(f"❌ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - FAILED: {error_msg}")
-                    
-                    # Log error to Logfire
-                    logfire.error(
-                        "Evaluation failed",
-                        puzzle=puzzle_name,
-                        framework=framework_name,
-                        model=model_id,
-                        run_number=run_number,
-                        execution_time=execution_time,
-                        error=error_msg,
-                        status="Fail"
-                    )
-
-                    return EvaluationResult(
-                        puzzle=puzzle_name,
-                        framework=framework_name,
-                        model=model_id,
-                        run_number=run_number,
-                        status="Fail",
-                        error_message=error_msg,
-                        execution_time=execution_time
-                    )
-
-            except Exception as e:
+        except Exception as e:
                 execution_time = time.time() - start_time
                 error_msg = str(e)
 
@@ -207,19 +199,23 @@ class EvaluationRunner:
         # Run all combinations with Logfire span
         with logfire.span("evaluation_batch", total_evaluations=total_evaluations):
             for puzzle in config.PUZZLES:
-                for combo in config.FRAMEWORK_MODEL_COMBINATIONS:
-                    for framework in combo["frameworks"]:
-                        for model in combo["models"]:
-                            for run_num in range(1, config.NUM_RUNS + 1):
-                                current_eval += 1
-                                
-                                logger.info(f"📈 Progress: {current_eval}/{total_evaluations}")
-                                
-                                result = await self.run_single_evaluation(
-                                    puzzle, framework, model, run_num
-                                )
-                                
-                                self.results.append(result)
+                with logfire.span(f"puzzle_{puzzle}"):
+                    for combo in config.FRAMEWORK_MODEL_COMBINATIONS:
+                        for framework in combo["frameworks"]:
+                            with logfire.span(f"framework_{framework}"):
+                                for model in combo["models"]:
+                                    with logfire.span(f"model_{model}"):
+                                        for run_num in range(1, config.NUM_RUNS + 1):
+                                            with logfire.span(f"run_{run_num}"):
+                                                current_eval += 1
+                                                
+                                                logger.info(f"📈 Progress: {current_eval}/{total_evaluations}")
+                                                
+                                                result = await self.run_single_evaluation(
+                                                    puzzle, framework, model, run_num
+                                                )
+                                                
+                                                self.results.append(result)
         
         # Create summary
         summary = EvaluationSummary(
@@ -230,10 +226,8 @@ class EvaluationRunner:
         
         # Log final summary to Logfire
         passed_runs = len([r for r in self.results if r.status == "Pass"])
-        failed_runs = len([r for r in self.results if r.status == "Fail"])
-        not_available_runs = len([r for r in self.results if r.status == "Not Available"])
-        testable_runs = passed_runs + failed_runs
-        success_rate = (passed_runs / testable_runs * 100) if testable_runs > 0 else 0
+        failed_runs = len(self.results) - passed_runs
+        success_rate = (passed_runs / len(self.results) * 100) if self.results else 0
         
         # Calculate average execution time, handling None values
         execution_times = [r.execution_time for r in self.results if r.execution_time is not None]
@@ -244,8 +238,6 @@ class EvaluationRunner:
             total_runs=len(self.results),
             passed_runs=passed_runs,
             failed_runs=failed_runs,
-            not_available_runs=not_available_runs,
-            testable_runs=testable_runs,
             success_rate=success_rate,
             avg_execution_time=avg_execution_time
         )
@@ -295,7 +287,9 @@ class EvaluationRunner:
             for framework_name, statuses in frameworks.items():
                 passes = statuses.count("Pass")
                 fails = statuses.count("Fail")
+                not_available = statuses.count("Not Available")
                 testable_runs = passes + fails
+                total = len(statuses)
                 rate = (passes / testable_runs * 100) if testable_runs > 0 else 0
                 
                 # Create status display with emoji
