@@ -95,11 +95,11 @@ If no Logfire token is provided, the system will still work but only provide con
 <!-- INCLUDE reports/latest.md -->
 # AgentGym Evaluation Results
 
-Generated on: 2025-07-07 13:38:43
+Generated on: 2025-07-07 14:04:40
 
 ## Summary
 
-Total evaluations: 64
+Total evaluations: 96
 
 ## Results by Puzzle
 
@@ -108,48 +108,48 @@ Total evaluations: 64
 ### Fruit_count
 
 
-| Framework | Model | Run 1 | Run 2 | Success Rate |
-|-----------|-------|-------|-------|--------------|
-| raw_openai_api | qwen/qwen3-14b | ✅ | ✅ | 100.0% |
-| raw_openai_api | gemma-3-12b-it  | ✅ | ✅ | 100.0% |
-| pydantic_ai_openai | qwen/qwen3-14b | ❌ | ❌ | 0.0% |
-| pydantic_ai_openai | gemma-3-12b-it  | ✅ | ✅ | 100.0% |
-| pydantic_ai | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | 100.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | 100.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ✅ | ✅ | 100.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ✅ | ✅ | 100.0% |
-| pydantic_ai_enhanced | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | 100.0% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| strands | mistral.mistral-large-2407-v1:0 | ✅ | ❌ | 50.0% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | 100.0% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | 0.0% |
+| Framework | Model | Run 1 | Run 2 | Run 3 | Success Rate |
+|-----------|-------|-------|-------|-------|--------------|
+| raw_openai_api | qwen/qwen3-14b | ✅ | ✅ | ✅ | 100.0% |
+| raw_openai_api | gemma-3-12b-it  | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai_openai | qwen/qwen3-14b | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_openai | gemma-3-12b-it  | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai_enhanced | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | 0.0% |
+| strands | mistral.mistral-large-2407-v1:0 | ❌ | ✅ | ✅ | 66.7% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | 0.0% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | ❌ | 0.0% |
 
 
 
 ### Towers_of_hanoi
 
 
-| Framework | Model | Run 1 | Run 2 | Success Rate |
-|-----------|-------|-------|-------|--------------|
-| raw_openai_api | qwen/qwen3-14b | ✅ | ✅ | 100.0% |
-| raw_openai_api | gemma-3-12b-it  | ✅ | ✅ | 100.0% |
-| pydantic_ai_openai | qwen/qwen3-14b | ❌ | ❌ | 0.0% |
-| pydantic_ai_openai | gemma-3-12b-it  | ✅ | ✅ | 100.0% |
-| pydantic_ai | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | 100.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ❌ | ❌ | 0.0% |
-| pydantic_ai_enhanced | mistral.mistral-large-2407-v1:0 | ⚪ | ⚪ | N/A% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ⚪ | ⚪ | N/A% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ⚪ | ⚪ | N/A% |
-| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ⚪ | ⚪ | N/A% |
-| strands | mistral.mistral-large-2407-v1:0 | ⚪ | ⚪ | N/A% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ⚪ | ⚪ | N/A% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ⚪ | ⚪ | N/A% |
-| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ⚪ | ⚪ | N/A% |
+| Framework | Model | Run 1 | Run 2 | Run 3 | Success Rate |
+|-----------|-------|-------|-------|-------|--------------|
+| raw_openai_api | qwen/qwen3-14b | ✅ | ✅ | ✅ | 100.0% |
+| raw_openai_api | gemma-3-12b-it  | ❌ | ✅ | ✅ | 66.7% |
+| pydantic_ai_openai | qwen/qwen3-14b | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai_openai | gemma-3-12b-it  | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | mistral.mistral-large-2407-v1:0 | ✅ | ✅ | ✅ | 100.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ✅ | ✅ | ❌ | 66.7% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ❌ | ❌ | ❌ | 0.0% |
+| pydantic_ai | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ✅ | ❌ | ✅ | 66.7% |
+| pydantic_ai_enhanced | mistral.mistral-large-2407-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| pydantic_ai_enhanced | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| strands | mistral.mistral-large-2407-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
+| strands | arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 | ⚪ | ⚪ | ⚪ | N/A% |
 
 
 
@@ -159,123 +159,183 @@ Total evaluations: 64
 
 - **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 1: ✅
 
-  - Time: 19.63s
+  - Time: 21.05s
 
 - **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 2: ✅
 
-  - Time: 19.67s
+  - Time: 20.72s
+
+- **fruit_count** / raw_openai_api / qwen/qwen3-14b / Run 3: ✅
+
+  - Time: 18.74s
 
 - **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 1: ✅
 
-  - Time: 21.72s
+  - Time: 11.79s
 
 - **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 2: ✅
 
-  - Time: 11.45s
+  - Time: 11.24s
+
+- **fruit_count** / raw_openai_api / gemma-3-12b-it  / Run 3: ✅
+
+  - Time: 11.28s
 
 - **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 1: ❌
   - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
-  - Time: 0.45s
+  - Time: 0.37s
 
 - **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 2: ❌
   - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
   - Time: 0.03s
 
+- **fruit_count** / pydantic_ai_openai / qwen/qwen3-14b / Run 3: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.03s
+
 - **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 1: ✅
 
-  - Time: 11.57s
+  - Time: 11.72s
 
 - **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 2: ✅
 
-  - Time: 8.19s
+  - Time: 8.15s
+
+- **fruit_count** / pydantic_ai_openai / gemma-3-12b-it  / Run 3: ✅
+
+  - Time: 8.01s
 
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 1: ✅
 
-  - Time: 4.23s
+  - Time: 4.59s
 
 - **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 2: ✅
 
-  - Time: 5.83s
+  - Time: 6.45s
+
+- **fruit_count** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 3: ✅
+
+  - Time: 5.66s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ✅
 
-  - Time: 3.0s
+  - Time: 3.01s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ✅
 
-  - Time: 2.85s
+  - Time: 2.81s
+
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ✅
+
+  - Time: 2.99s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ✅
 
-  - Time: 2.57s
+  - Time: 2.64s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ✅
 
-  - Time: 2.63s
+  - Time: 2.54s
+
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ✅
+
+  - Time: 2.58s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ✅
 
-  - Time: 2.33s
+  - Time: 2.23s
 
 - **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ✅
 
-  - Time: 2.8s
+  - Time: 2.13s
+
+- **fruit_count** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ✅
+
+  - Time: 2.43s
 
 - **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 1: ✅
 
-  - Time: 3.88s
+  - Time: 3.6s
 
 - **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 2: ✅
 
-  - Time: 4.06s
+  - Time: 3.7s
+
+- **fruit_count** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 3: ✅
+
+  - Time: 3.95s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 3.02s
+  - Error: fruit_count_by_color must match {'orange': 25, 'apple': 30}, got: {}
+  - Time: 2.9s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.92s
+  - Time: 2.83s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.95s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.93s
+  - Time: 2.34s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.2s
+  - Time: 2.32s
+
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 2.21s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.25s
+  - Time: 2.0s
 
 - **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.03s
+  - Time: 2.32s
 
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 1: ✅
+- **fruit_count** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ❌
+  - Error: Exceeded maximum retries (1) for result validation
+  - Time: 1.86s
 
-  - Time: 8.29s
-
-- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 2: ❌
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 1: ❌
   - Error: No valid tool use or tool use input was found in the Bedrock response.
-  - Time: 7.25s
+  - Time: 6.41s
+
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 2: ✅
+
+  - Time: 5.7s
+
+- **fruit_count** / strands / mistral.mistral-large-2407-v1:0 / Run 3: ✅
+
+  - Time: 5.94s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ✅
 
-  - Time: 5.88s
+  - Time: 4.57s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ✅
 
-  - Time: 5.82s
+  - Time: 4.41s
+
+- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ✅
+
+  - Time: 4.42s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
   - Error: fruit_count_by_color must match {'orange': 25, 'apple': 30}, got: {'orange': 10, 'apple': 20}
-  - Time: 4.73s
+  - Time: 4.05s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
   - Error: fruit_count_by_color must match {'orange': 25, 'apple': 30}, got: {'orange': 10, 'apple': 20}
-  - Time: 5.35s
+  - Time: 3.9s
+
+- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
+  - Error: fruit_count_by_color must match {'orange': 25, 'apple': 30}, got: {'orange': 10, 'apple': 20}
+  - Time: 4.15s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
   - Error: 2 validation errors for FruitCountResponse
@@ -285,7 +345,7 @@ fruit_count_by_color.orange
 fruit_count_by_color.apple
   Field required [type=missing, input_value={'type': 'dict', 'value':...ange': 10, 'apple': 20}}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.11/v/missing
-  - Time: 2.47s
+  - Time: 2.18s
 
 - **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
   - Error: 2 validation errors for FruitCountResponse
@@ -295,77 +355,123 @@ fruit_count_by_color.orange
 fruit_count_by_color.apple
   Field required [type=missing, input_value={'type': 'dict', 'value':...ange': 10, 'apple': 20}}, input_type=dict]
     For further information visit https://errors.pydantic.dev/2.11/v/missing
-  - Time: 2.34s
+  - Time: 2.17s
+
+- **fruit_count** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ❌
+  - Error: 2 validation errors for FruitCountResponse
+fruit_count_by_color.orange
+  Field required [type=missing, input_value={'type': 'dict', 'value':...ange': 10, 'apple': 20}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+fruit_count_by_color.apple
+  Field required [type=missing, input_value={'type': 'dict', 'value':...ange': 10, 'apple': 20}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/missing
+  - Time: 2.14s
 
 - **towers_of_hanoi** / raw_openai_api / qwen/qwen3-14b / Run 1: ✅
 
-  - Time: 53.4s
+  - Time: 68.36s
 
 - **towers_of_hanoi** / raw_openai_api / qwen/qwen3-14b / Run 2: ✅
 
-  - Time: 54.22s
+  - Time: 54.5s
 
-- **towers_of_hanoi** / raw_openai_api / gemma-3-12b-it  / Run 1: ✅
+- **towers_of_hanoi** / raw_openai_api / qwen/qwen3-14b / Run 3: ✅
 
-  - Time: 119.36s
+  - Time: 57.92s
+
+- **towers_of_hanoi** / raw_openai_api / gemma-3-12b-it  / Run 1: ❌
+  - Error: Puzzle was not solved
+  - Time: 122.11s
 
 - **towers_of_hanoi** / raw_openai_api / gemma-3-12b-it  / Run 2: ✅
 
-  - Time: 65.66s
+  - Time: 64.84s
+
+- **towers_of_hanoi** / raw_openai_api / gemma-3-12b-it  / Run 3: ✅
+
+  - Time: 62.81s
 
 - **towers_of_hanoi** / pydantic_ai_openai / qwen/qwen3-14b / Run 1: ❌
   - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
-  - Time: 0.13s
+  - Time: 0.11s
 
 - **towers_of_hanoi** / pydantic_ai_openai / qwen/qwen3-14b / Run 2: ❌
+  - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
+  - Time: 0.04s
+
+- **towers_of_hanoi** / pydantic_ai_openai / qwen/qwen3-14b / Run 3: ❌
   - Error: status_code: 400, model_name: qwen/qwen3-14b, body: Cannot set structured output to force tools for engine type: mlx-llm
   - Time: 0.03s
 
 - **towers_of_hanoi** / pydantic_ai_openai / gemma-3-12b-it  / Run 1: ✅
 
-  - Time: 40.65s
+  - Time: 42.6s
 
 - **towers_of_hanoi** / pydantic_ai_openai / gemma-3-12b-it  / Run 2: ✅
 
-  - Time: 33.58s
+  - Time: 33.46s
+
+- **towers_of_hanoi** / pydantic_ai_openai / gemma-3-12b-it  / Run 3: ✅
+
+  - Time: 36.68s
 
 - **towers_of_hanoi** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 1: ✅
 
-  - Time: 68.18s
+  - Time: 18.83s
 
 - **towers_of_hanoi** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 2: ✅
 
-  - Time: 18.86s
+  - Time: 21.92s
 
-- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 6.42s
+- **towers_of_hanoi** / pydantic_ai / mistral.mistral-large-2407-v1:0 / Run 3: ✅
 
-- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ❌
-  - Error: Exceeded maximum retries (1) for result validation
-  - Time: 6.45s
+  - Time: 23.48s
+
+- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 1: ✅
+
+  - Time: 17.79s
+
+- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 2: ✅
+
+  - Time: 14.83s
+
+- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ❌
+  - Error: The next request would exceed the request_limit of 50
+  - Time: 45.25s
 
 - **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 2.79s
+  - Time: 3.06s
 
 - **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 3.08s
+  - Time: 2.91s
 
-- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ❌
+- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 5.17s
+  - Time: 2.98s
+
+- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ✅
+
+  - Time: 4.28s
 
 - **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ❌
   - Error: Exceeded maximum retries (1) for result validation
-  - Time: 5.16s
+  - Time: 5.61s
+
+- **towers_of_hanoi** / pydantic_ai / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ✅
+
+  - Time: 8.51s
 
 - **towers_of_hanoi** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 1: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
 - **towers_of_hanoi** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 2: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
+- **towers_of_hanoi** / pydantic_ai_enhanced / mistral.mistral-large-2407-v1:0 / Run 3: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
@@ -377,11 +483,19 @@ fruit_count_by_color.apple
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
+- **towers_of_hanoi** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
 - **towers_of_hanoi** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
 - **towers_of_hanoi** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 2: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
+- **towers_of_hanoi** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
@@ -393,11 +507,19 @@ fruit_count_by_color.apple
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
+- **towers_of_hanoi** / pydantic_ai_enhanced / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
 - **towers_of_hanoi** / strands / mistral.mistral-large-2407-v1:0 / Run 1: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
 - **towers_of_hanoi** / strands / mistral.mistral-large-2407-v1:0 / Run 2: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
+- **towers_of_hanoi** / strands / mistral.mistral-large-2407-v1:0 / Run 3: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
@@ -409,6 +531,10 @@ fruit_count_by_color.apple
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
+- **towers_of_hanoi** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-2-90b-instruct-v1:0 / Run 3: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
 - **towers_of_hanoi** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 1: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
@@ -417,11 +543,19 @@ fruit_count_by_color.apple
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
+- **towers_of_hanoi** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama3-3-70b-instruct-v1:0 / Run 3: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
 - **towers_of_hanoi** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 1: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
 - **towers_of_hanoi** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 2: ⚪
+  - Error: No implementation for towers_of_hanoi puzzle
+  - Time: 0.0s
+
+- **towers_of_hanoi** / strands / arn:aws:bedrock:us-west-2:***:inference-profile/us.meta.llama4-maverick-17b-instruct-v1:0 / Run 3: ⚪
   - Error: No implementation for towers_of_hanoi puzzle
   - Time: 0.0s
 
