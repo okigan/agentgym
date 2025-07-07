@@ -1,7 +1,7 @@
 """Pydantic AI agent implementation."""
 
 import logging
-from pydantic_ai import Agent, RunContext
+from pydantic_ai import Agent, RunContext, NativeOutput, PromptedOutput
 from pydantic_ai.models.bedrock import BedrockConverseModel
 from puzzles.fruit_count.tools import get_count_of_oranges, get_count_of_apples
 from puzzles.fruit_count.checker import FruitCountResponse
@@ -40,7 +40,8 @@ def make_agent(model_id: str) -> Agent[AgentTestContext, FruitCountResponse]:
     agent = Agent(
         model=model,
         deps_type=AgentTestContext,
-        output_type=FruitCountResponse,
+        # output_type=NativeOutput(FruitCountResponse),
+        output_type=PromptedOutput(FruitCountResponse),
         system_prompt="""
         You are a fruit counting assistant. You MUST use the available tools to get fruit counts.
         When asked about fruit counts:
