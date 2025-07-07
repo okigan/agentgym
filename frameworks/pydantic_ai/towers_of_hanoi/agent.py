@@ -1,7 +1,7 @@
 """Pydantic AI agent implementation for Towers of Hanoi."""
 
 import logging
-from pydantic_ai import Agent, RunContext
+from pydantic_ai import Agent, RunContext, PromptedOutput
 from pydantic_ai.models.bedrock import BedrockConverseModel
 from puzzles.towers_of_hanoi.tools import (
     get_tower_state, move_disk, check_if_solved, reset_puzzle
@@ -41,7 +41,7 @@ def make_agent(model_id: str) -> Agent[AgentTestContext, TowersOfHanoiResponse]:
     agent = Agent(
         model=model,
         deps_type=AgentTestContext,
-        output_type=TowersOfHanoiResponse,
+        output_type=PromptedOutput(TowersOfHanoiResponse),
         system_prompt="""
         You are a Towers of Hanoi puzzle solver. You MUST use the available tools to solve the puzzle.
         
