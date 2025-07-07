@@ -55,7 +55,7 @@ FRAMEWORK_MODEL_COMBINATIONS = [
 ]
 
 # Number of runs per (puzzle, framework, model) combination
-NUM_RUNS = 2
+NUM_RUNS = 3
 
 # Timeout settings (in seconds)
 TEST_TIMEOUT = 120
