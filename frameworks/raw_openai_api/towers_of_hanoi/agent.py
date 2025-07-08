@@ -5,7 +5,7 @@ import logging
 import re
 from typing import Dict, Any, List, Optional
 from puzzles.towers_of_hanoi.tools import (
-    get_tower_state, move_disk, check_if_solved, reset_puzzle
+    get_tower_state, move_disk, check_if_solved, reset_puzzle, get_column_names
 )
 from puzzles.towers_of_hanoi.checker import TowersOfHanoiResponse
 
@@ -19,48 +19,48 @@ class AgentTestContext:
 
 
 async def call_openai_api(base_url: str, model: str, messages: List[Dict], tools: Optional[List[Dict]] = None) -> Dict[Any, Any]:
-    """Make a raw HTTP request to OpenAI API."""
+    """Make a raw HTTP request to OpenAI API using httpx."""
     try:
-        import aiohttp
+        import httpx
     except ImportError:
-        raise ImportError("aiohttp is required for custom endpoint support. Install with: uv add aiohttp")
-    
+        raise ImportError("httpx is required for custom endpoint support. Install with: uv add httpx")
+
     url = f"{base_url}/chat/completions"
-    
+
     payload = {
         "model": model,
         "messages": messages,
         "temperature": 0.1,
         "max_tokens": 2000
     }
-    
+
     if tools:
         payload["tools"] = tools
         payload["tool_choice"] = "auto"
-    
+
     headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer dummy-key"
     }
-    
+
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=payload, headers=headers) as response:
-                if response.status != 200:
-                    error_text = await response.text()
-                    raise Exception(f"API request failed: {response.status} - {error_text}")
-                
-                response_data = await response.json()
-                
-                # Check if the returned model matches what we requested
-                if "model" in response_data and response_data["model"] != model:
-                    logger.warning(f"Model mismatch: requested '{model}' but API returned '{response_data['model']}'")
-                elif "model" not in response_data:
-                    logger.warning(f"API response does not include model field - cannot verify if '{model}' is actually being used")
-                
-                return response_data
-                
-    except aiohttp.ClientError as e:
+        async with httpx.AsyncClient(timeout=300) as client:
+            response = await client.post(url, json=payload, headers=headers)
+            if response.status_code != 200:
+                error_text = response.text
+                raise Exception(f"API request failed: {response.status_code} - {error_text}")
+
+            response_data = response.json()
+
+            # Check if the returned model matches what we requested
+            if "model" in response_data and response_data["model"] != model:
+                logger.warning(f"Model mismatch: requested '{model}' but API returned '{response_data['model']}'")
+            elif "model" not in response_data:
+                logger.warning(f"API response does not include model field - cannot verify if '{model}' is actually being used")
+
+            return response_data
+
+    except httpx.RequestError as e:
         raise Exception(f"Network error connecting to {base_url}: {e}")
     except Exception as e:
         raise Exception(f"Error calling raw OpenAI API at {base_url}: {e}")
@@ -107,13 +107,11 @@ async def make_agent(model_config):
                     "properties": {
                         "from_tower": {
                             "type": "string",
-                            "description": "Source tower ('A', 'B', or 'C')",
-                            "enum": ["A", "B", "C"]
+                            "description": "Source tower (ex. 'A', 'B', or 'C')",
                         },
                         "to_tower": {
                             "type": "string", 
-                            "description": "Destination tower ('A', 'B', or 'C')",
-                            "enum": ["A", "B", "C"]
+                            "description": "Destination tower (ex. 'A', 'B', or 'C')",
                         }
                     },
                     "required": ["from_tower", "to_tower"]
@@ -143,6 +141,18 @@ async def make_agent(model_config):
                     "required": []
                 }
             }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "get_column_names",
+                "description": "Get the list of tower (column) names. Returns a list of column names (e.g., ['A', 'B', 'C']).",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            }
         }
     ]
     
@@ -150,17 +160,19 @@ async def make_agent(model_config):
         {
             "role": "system",
             "content": """
-            You are a Towers of Hanoi puzzle solver. You MUST use the available tools to solve the puzzle.
+            You are a Towers of Hanoi puzzle solver. 
+            You MUST use the available tools to solve the puzzle.
             
             RULES:
-            - There are 3 towers: A, B, and C
-            - Tower A starts with 3 disks (3=largest, 2=medium, 1=smallest)
-            - Goal: Move all disks from tower A to tower C
+            - There are 3 towers: example T1, T2, and T3 - actual tower names will be different
+            - Query the current state of the towers using get_tower_state
+            - Goal: Move all disks from tower T1 to tower T3
             - You can only move one disk at a time
             - You can only move the top disk from a tower
             - You cannot place a larger disk on a smaller disk
             
             STRATEGY:
+            0. Make sure to use tools provided
             1. Use get_tower_state to see the current state
             2. Plan your moves carefully - minimum 7 moves needed
             3. Use move_disk to make moves one by one
@@ -169,9 +181,9 @@ async def make_agent(model_config):
             
             When you're done, respond ONLY with a valid JSON object in this exact format:
             {
-                "moves": [{"from": "A", "to": "C"}, {"from": "A", "to": "B"}, ...],
+                "moves": [{"from": "T1", "to": "T3"}, {"from": "T1", "to": "T2"}, ...],
                 "solved": true,
-                "final_state": {"A": [], "B": [], "C": [3, 2, 1]}
+                "final_state": {...}
             }
             
             The moves array should contain ALL moves you made in order.
@@ -232,6 +244,8 @@ async def make_agent(model_config):
                     elif function_name == "reset_puzzle":
                         result = await reset_puzzle(context)
                         context.moves_made = []  # Reset move tracking
+                    elif function_name == "get_column_names":
+                        result = await get_column_names(context)
                     else:
                         result = {"error": "Unknown function"}
                     
@@ -315,6 +329,7 @@ async def make_agent(model_config):
 
 async def run_agent(model_config):
     """Create and run the agent for the given model_config."""
+    await reset_puzzle(None)
     return await make_agent(model_config)
 
 

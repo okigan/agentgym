@@ -48,14 +48,14 @@ def check(result: Any) -> None:
     if not response.solved:
         raise AssertionError("Puzzle was not solved")
     
-    # Check if final state is correct (all disks on tower C)
+    # Check if final state is correct (all disks on tower Z)
     expected_final_state = [3, 2, 1]
-    if response.final_state.get('C') != expected_final_state:
-        raise AssertionError(f"Final state incorrect. Tower C should have {expected_final_state}, got {response.final_state.get('C')}")
+    if response.final_state.get('Z') != expected_final_state:
+        raise AssertionError(f"Final state incorrect. Tower Z should have {expected_final_state}, got {response.final_state.get('Z')}")
     
-    # Check if towers A and B are empty
-    if response.final_state.get('A') != [] or response.final_state.get('B') != []:
-        raise AssertionError(f"Towers A and B should be empty. Got A: {response.final_state.get('A')}, B: {response.final_state.get('B')}")
+    # Check if towers X and Y are empty
+    if response.final_state.get('X') != [] or response.final_state.get('Y') != []:
+        raise AssertionError(f"Towers X and Y should be empty. Got X: {response.final_state.get('X')}, Y: {response.final_state.get('Y')}")
     
     # Check if moves are valid (optional: could validate the entire sequence)
     if len(response.moves) < 7:  # Minimum moves for 3-disk Tower of Hanoi is 7
@@ -69,7 +69,7 @@ def check(result: Any) -> None:
         from_tower = move['from']
         to_tower = move['to']
         
-        if from_tower not in ['A', 'B', 'C'] or to_tower not in ['A', 'B', 'C']:
+        if from_tower not in ['X', 'Y', 'Z'] or to_tower not in ['X', 'Y', 'Z']:
             raise AssertionError(f"Move {i+1} has invalid tower names: {from_tower} → {to_tower}")
     
     logger.info("✅ Towers of Hanoi puzzle passed check")

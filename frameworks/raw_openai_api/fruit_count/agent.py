@@ -3,9 +3,12 @@
 import json
 import logging
 import re
-from typing import Dict, Any, List, Optional
-from puzzles.fruit_count.tools import get_count_of_oranges, get_count_of_apples
+from typing import Any, Dict, List, Optional
+
+import httpx
+
 from puzzles.fruit_count.checker import FruitCountResponse
+from puzzles.fruit_count.tools import get_count_of_apples, get_count_of_oranges
 
 logger = logging.getLogger(__name__)
 
@@ -18,47 +21,41 @@ class AgentTestContext:
 
 async def call_openai_api(base_url: str, model: str, messages: List[Dict], tools: Optional[List[Dict]] = None) -> Dict[Any, Any]:
     """Make a raw HTTP request to OpenAI API."""
-    try:
-        import aiohttp
-    except ImportError:
-        raise ImportError("aiohttp is required for custom endpoint support. Install with: uv add aiohttp")
-    
     url = f"{base_url}/chat/completions"
-    
+
     payload = {
         "model": model,
         "messages": messages,
         "temperature": 0.1,
         "max_tokens": 1000
     }
-    
+
     if tools:
         payload["tools"] = tools
         payload["tool_choice"] = "auto"
-    
+
     headers = {
         "Content-Type": "application/json",
         "Authorization": "Bearer dummy-key"
     }
-    
+
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=payload, headers=headers) as response:
-                if response.status != 200:
-                    error_text = await response.text()
-                    raise Exception(f"API request failed: {response.status} - {error_text}")
-                
-                response_data = await response.json()
-                
-                # Check if the returned model matches what we requested
-                if "model" in response_data and response_data["model"] != model:
-                    logger.warning(f"Model mismatch: requested '{model}' but API returned '{response_data['model']}'")
-                elif "model" not in response_data:
-                    logger.warning(f"API response does not include model field - cannot verify if '{model}' is actually being used")
-                
-                return response_data
-                
-    except aiohttp.ClientError as e:
+        async with httpx.AsyncClient(timeout=300) as client:
+            response = await client.post(url, json=payload, headers=headers)
+            if response.status_code != 200:
+                error_text = response.text
+                raise Exception(f"API request failed: {response.status_code} - {error_text}")
+
+            response_data = response.json()
+
+            # Check if the returned model matches what we requested
+            if "model" in response_data and response_data["model"] != model:
+                logger.warning(f"Model mismatch: requested '{model}' but API returned '{response_data['model']}'")
+            elif "model" not in response_data:
+                logger.warning(f"API response does not include model field - cannot verify if '{model}' is actually being used")
+
+            return response_data
+    except httpx.RequestError as e:
         raise Exception(f"Network error connecting to {base_url}: {e}")
     except Exception as e:
         raise Exception(f"Error calling raw OpenAI API at {base_url}: {e}")
