@@ -3,8 +3,28 @@
 import os
 import logging
 from typing import Optional
+from typing import TypedDict, Any
+import hashlib
+import json
+import diskcache
 
 import logfire
+
+
+# Helper to aggregate OpenAI usage dicts (prompt_tokens, completion_tokens, total_tokens)
+def aggregate_usages(usage_list):
+    agg = {}
+    for k in ("prompt_tokens", "completion_tokens", "total_tokens"):
+        agg[k] = sum(u.get(k, 0) for u in usage_list if u)
+    # Optionally, include the full list for debugging
+    agg["calls"] = usage_list
+    return agg
+
+# Shared result type for AgentGym agent frameworks
+class AgentGymAgentResult(TypedDict):
+    result: Any  # Use Any to avoid circular import issues; frameworks should document expected type
+    usage: dict[str, Any]
+
 
 
 def setup_aws_environment(profile: str | None = None):
@@ -69,3 +89,28 @@ def setup_logging(level: int = logging.INFO):
     boto_logger.setLevel(logging.INFO)  # Keep boto3 at INFO to avoid noise
     
     return logging.getLogger(__name__)
+
+
+_global_cache = diskcache.Cache('./.cache')
+
+def _make_cache_key_generic(func, args, kwargs):
+    # Canonicalize all args/kwargs to a stable JSON string, then hash
+    key_data = {
+        "func_module": func.__module__,
+        "func_name": func.__name__,
+        "args": args,
+        "kwargs": kwargs,
+    }
+    key_str = json.dumps(key_data, sort_keys=True, default=str, separators=(",", ":"))
+    return hashlib.sha256(key_str.encode()).hexdigest()
+    
+def disk_cache_async(func):
+    """Generic async disk cache decorator for any function signature."""
+    async def wrapper(*args, **kwargs):
+        key = _make_cache_key_generic(func, args, kwargs)
+        if key in _global_cache:
+            return _global_cache[key]
+        result = await func(*args, **kwargs)
+        _global_cache[key] = result
+        return result
+    return wrapper

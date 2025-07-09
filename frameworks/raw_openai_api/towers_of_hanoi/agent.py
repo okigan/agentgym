@@ -8,8 +8,11 @@ from puzzles.towers_of_hanoi.tools import (
     get_tower_state, move_disk, check_if_solved, reset_puzzle, get_column_names
 )
 from puzzles.towers_of_hanoi.checker import TowersOfHanoiResponse
+from app.utils import AgentGymAgentResult, aggregate_usages
+from app.utils import disk_cache_async
 
 logger = logging.getLogger(__name__)
+
 
 
 class AgentTestContext:
@@ -18,6 +21,7 @@ class AgentTestContext:
         self.moves_made = []
 
 
+@disk_cache_async
 async def call_openai_api(base_url: str, model: str, messages: List[Dict], tools: Optional[List[Dict]] = None) -> Dict[Any, Any]:
     """Make a raw HTTP request to OpenAI API using httpx."""
     try:
@@ -193,7 +197,7 @@ async def make_agent(model_config):
         },
         {
             "role": "user",
-            "content": "Solve the Towers of Hanoi puzzle. Move all disks from tower A to tower C following the rules."
+            "content": "Solve the Towers of Hanoi puzzle. Move all disks from first tower to last tower following the rules."
         }
     ]
     
@@ -203,30 +207,33 @@ async def make_agent(model_config):
     # Conversation loop for tool calls
     max_iterations = 20  # Prevent infinite loops
     iteration = 0
-    
+    # Track all usage dicts
+    usage_list = []
+
     while iteration < max_iterations:
         iteration += 1
         logger.info(f"API call iteration {iteration}")
-        
+
         # Make API call
         response = await call_openai_api(base_url, model, messages, tools)
-        
+        usage_list.append(response.get("usage", {}))
+
         # Handle tool calls if any
         if "choices" in response and len(response["choices"]) > 0:
             choice = response["choices"][0]
             message = choice["message"]
-            
+
             if message.get("tool_calls"):
                 # Add assistant message with tool calls to conversation
                 messages.append(message)
-                
+
                 # Execute tool calls
                 for tool_call in message["tool_calls"]:
                     function_name = tool_call["function"]["name"]
-                    function_args = json.loads(tool_call["function"]["arguments"]) if tool_call["function"]["arguments"] else {}
-                    
+                    function_args = json.loads(tool_call["function"].get("arguments", "{}")) if tool_call["function"].get("arguments") else {}
+
                     logger.info(f"Executing tool: {function_name} with args: {function_args}")
-                    
+
                     if function_name == "get_tower_state":
                         result = await get_tower_state(context)
                     elif function_name == "move_disk":
@@ -248,82 +255,91 @@ async def make_agent(model_config):
                         result = await get_column_names(context)
                     else:
                         result = {"error": "Unknown function"}
-                    
+
                     # Add tool result to conversation
                     messages.append({
                         "role": "tool",
                         "tool_call_id": tool_call["id"],
                         "content": json.dumps(result)
                     })
-                
+
                 # Continue conversation loop
                 continue
-            
+
             else:
                 # No tool calls, this should be the final response
                 content = message.get("content", "")
-                
+
                 # Try to parse as JSON
                 try:
                     # Clean up response - remove markdown code blocks and thinking tags
                     content = content.strip()
-                    
+
                     # Remove <think>...</think> tags if present
                     content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
-                    
+
                     # Remove markdown code blocks if present
                     if content.startswith("```json"):
                         content = content.replace("```json", "").replace("```", "").strip()
                     elif content.startswith("```"):
                         content = content.replace("```", "").strip()
-                    
+
                     # Try to find JSON in response
                     json_match = re.search(r'\{.*"moves".*\}', content, re.DOTALL)
                     if json_match:
                         content = json_match.group(0)
-                    
+
                     result = json.loads(content)
-                    
+
                     # Validate and create response
                     if "moves" in result and "solved" in result and "final_state" in result:
                         # Ensure moves from context are included if not already in result
                         if not result["moves"] and context.moves_made:
                             result["moves"] = context.moves_made
-                        
-                        return TowersOfHanoiResponse(
-                            moves=result["moves"],
-                            solved=result["solved"],
-                            final_state=result["final_state"]
+
+                        return AgentGymAgentResult(
+                            result=TowersOfHanoiResponse(
+                                moves=result["moves"],
+                                solved=result["solved"],
+                                final_state=result["final_state"]
+                            ),
+                            usage=aggregate_usages(usage_list)
                         )
                     else:
                         raise Exception(f"Invalid response format: {result}")
-                        
+
                 except json.JSONDecodeError:
                     # If we can't parse JSON, try to extract the final state and use tracked moves
                     logger.warning(f"Could not parse response as JSON: {content}")
-                    
+
                     # Get current state and check if solved
                     final_state = await get_tower_state(context)
                     solved_check = await check_if_solved(context)
-                    
-                    return TowersOfHanoiResponse(
-                        moves=context.moves_made,
-                        solved=solved_check.get("solved", False),
-                        final_state=final_state
+
+                    return AgentGymAgentResult(
+                        result=TowersOfHanoiResponse(
+                            moves=context.moves_made,
+                            solved=solved_check.get("solved", False),
+                            final_state=final_state
+                        ),
+                        usage=aggregate_usages(usage_list)
                     )
-        
+
         else:
             raise Exception("No valid response from API")
-    
+
     # If we've reached max iterations, return what we have
     logger.warning(f"Reached maximum iterations ({max_iterations})")
     final_state = await get_tower_state(context)
     solved_check = await check_if_solved(context)
-    
-    return TowersOfHanoiResponse(
-        moves=context.moves_made,
-        solved=solved_check.get("solved", False),
-        final_state=final_state
+
+    return AgentGymAgentResult(
+        result=TowersOfHanoiResponse(
+            moves=context.moves_made,
+            solved=solved_check.get("solved", False),
+            final_state=final_state
+        ),
+        usage=aggregate_usages(usage_list)
     )
 
 

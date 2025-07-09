@@ -5,10 +5,12 @@ import logging
 import re
 from typing import Any, Dict, List, Optional
 
+
 import httpx
 
 from puzzles.fruit_count.checker import FruitCountResponse
 from puzzles.fruit_count.tools import get_count_of_apples, get_count_of_oranges
+from app.utils import AgentGymAgentResult
 
 logger = logging.getLogger(__name__)
 
@@ -125,71 +127,76 @@ Do not include any text before or after the JSON. The response must be a single 
     
     # First API call
     response = await call_openai_api(base_url, model, messages, tools)
-    
+    usage = response.get("usage", {})
+
     # Handle tool calls if any
     if "choices" in response and len(response["choices"]) > 0:
         choice = response["choices"][0]
         message = choice["message"]
-        
+
         if message.get("tool_calls"):
             # Add assistant message with tool calls to conversation
             messages.append(message)
-            
+
             # Execute tool calls
             for tool_call in message["tool_calls"]:
                 function_name = tool_call["function"]["name"]
-                
+
                 if function_name == "get_count_of_oranges":
                     result = await get_count_of_oranges(AgentTestContext())
                 elif function_name == "get_count_of_apples":
                     result = await get_count_of_apples(AgentTestContext())
                 else:
                     result = "Unknown function"
-                
+
                 # Add tool result to conversation
                 messages.append({
                     "role": "tool",
                     "tool_call_id": tool_call["id"],
                     "content": str(result)
                 })
-            
+
             # Make second API call with tool results
             response = await call_openai_api(base_url, model, messages)
-    
+            usage = response.get("usage", usage)
+
     # Extract final response
     if "choices" in response and len(response["choices"]) > 0:
         content = response["choices"][0]["message"]["content"]
-        
+
         # Try to parse as JSON
         try:
             # Clean up response - remove markdown code blocks and thinking tags
             content = content.strip()
-            
+
             # Remove <think>...</think> tags if present
             content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
-            
+
             # Remove markdown code blocks if present
             if content.startswith("```json"):
                 content = content.replace("```json", "").replace("```", "").strip()
             elif content.startswith("```"):
                 content = content.replace("```", "").strip()
-            
+
             # Try to find JSON in response
             json_match = re.search(r'\{[^{}]*"fruit_count_by_color"[^{}]*\}', content)
             if json_match:
                 content = json_match.group(0)
-            
+
             result = json.loads(content)
-            
+
             # Convert to expected format
             if "fruit_count_by_color" in result:
-                return FruitCountResponse(fruit_count_by_color=result["fruit_count_by_color"])
+                return AgentGymAgentResult(
+                    result=FruitCountResponse(fruit_count_by_color=result["fruit_count_by_color"]),
+                    usage=usage
+                )
             else:
                 raise Exception(f"Invalid response format: {result}")
-                
+
         except json.JSONDecodeError:
             raise Exception(f"Could not parse response as JSON: {content}")
-    
+
     raise Exception("No valid response from API")
 
 

@@ -22,24 +22,27 @@ class EvaluationRunner:
         self.results: list[EvaluationResult] = []
         
     async def run_single_evaluation(
-        self, 
-        puzzle_name: str, 
-        framework_name: str, 
-        model_config, 
+        self,
+        puzzle_name: str,
+        framework_name: str,
+        model_config,
         run_number: int
     ) -> EvaluationResult:
-        """Run a single evaluation and return the result."""
-        
+        """Run a single evaluation and return the result, including token usage."""
+
         # Extract model identifier for logging
         if isinstance(model_config, dict):
             model_id = model_config.get("name", "custom_endpoint")
         else:
             model_id = model_config
-            
+
         logger.info(f"🚀 Running {puzzle_name}/{framework_name}/{model_id}/run_{run_number}")
-        
+
         start_time = time.time()
-        
+
+        prompt_tokens = None
+        prediction_tokens = None
+
         try:
             # Import checker for this puzzle
             checker_module = __import__(f"puzzles.{puzzle_name}.checker", fromlist=["check"])
@@ -51,8 +54,17 @@ class EvaluationRunner:
 
             # Create and run agent (await if coroutine)
             with logfire.span("agent_execution"):
-                result = await run_agent_func(model_config)
-            
+                agent_result = await run_agent_func(model_config)
+
+            # Only support new AgentGymAgentResult return type
+            if isinstance(agent_result, dict):
+                result = agent_result.get("result", agent_result)
+                usage = agent_result.get("usage")
+                prompt_tokens = usage.get("prompt_tokens") if usage else None
+                prediction_tokens = usage.get("completion_tokens") if usage else None
+            else:
+                result = agent_result
+
             # Check result
             with logfire.span("result_validation"):
                 check_func(result)
@@ -60,7 +72,7 @@ class EvaluationRunner:
             execution_time = time.time() - start_time
 
             logger.info(f"✅ {puzzle_name}/{framework_name}/{model_id}/run_{run_number} - PASSED ({execution_time:.2f}s)")
-            
+
             # Log success to Logfire
             logfire.info(
                 "Evaluation completed successfully",
@@ -69,7 +81,9 @@ class EvaluationRunner:
                 model=model_id,
                 run_number=run_number,
                 execution_time=execution_time,
-                status="Pass"
+                status="Pass",
+                prompt_tokens=prompt_tokens,
+                prediction_tokens=prediction_tokens
             )
 
             return EvaluationResult(
@@ -78,7 +92,9 @@ class EvaluationRunner:
                 model=model_id,
                 run_number=run_number,
                 status="Pass",
-                execution_time=execution_time
+                execution_time=execution_time,
+                prompt_tokens=prompt_tokens,
+                prediction_tokens=prediction_tokens
             )
 
         except ModuleNotFoundError as e:
@@ -106,7 +122,9 @@ class EvaluationRunner:
                     run_number=run_number,
                     status="Not Available",
                     error_message=f"No implementation for {puzzle_name} puzzle",
-                    execution_time=execution_time
+                    execution_time=execution_time,
+                    prompt_tokens=prompt_tokens,
+                    prediction_tokens=prediction_tokens
                 )
             else:
                 # Different module not found error, treat as failure
@@ -134,7 +152,9 @@ class EvaluationRunner:
                     run_number=run_number,
                     status="Fail",
                     error_message=error_msg,
-                    execution_time=execution_time
+                    execution_time=execution_time,
+                    prompt_tokens=prompt_tokens,
+                    prediction_tokens=prediction_tokens
                 )
 
         except Exception as e:
@@ -162,7 +182,9 @@ class EvaluationRunner:
                     run_number=run_number,
                     status="Fail",
                     error_message=error_msg,
-                    execution_time=execution_time
+                    execution_time=execution_time,
+                    prompt_tokens=prompt_tokens,
+                    prediction_tokens=prediction_tokens
                 )
     
     async def run_all_evaluations(self) -> EvaluationSummary:
@@ -287,11 +309,9 @@ class EvaluationRunner:
             for framework_name, statuses in frameworks.items():
                 passes = statuses.count("Pass")
                 fails = statuses.count("Fail")
-                not_available = statuses.count("Not Available")
                 testable_runs = passes + fails
-                total = len(statuses)
                 rate = (passes / testable_runs * 100) if testable_runs > 0 else 0
-                
+
                 # Create status display with emoji
                 status_display = []
                 for status in statuses:
@@ -303,7 +323,7 @@ class EvaluationRunner:
                         status_display.append("⚪")
                     else:
                         status_display.append("?")
-                
+
                 status_str = " | ".join(status_display)
                 rate_str = f"{rate:.0f}%" if testable_runs > 0 else "N/A"
                 print(f"   {framework_name:20} [{status_str}] ({rate_str})")

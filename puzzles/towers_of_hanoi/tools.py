@@ -57,7 +57,7 @@ def _make_move(from_tower: str, to_tower: str) -> bool:
 
 def _is_solved() -> bool:
     """Check if puzzle is solved (all disks on tower C)."""
-    return _TOWERS['C'] == [3, 2, 1]
+    return _TOWERS['Z'] == [3, 2, 1]
 
 def _get_tower_state() -> Dict[str, List[int]]:
     """Get the current state of all towers."""

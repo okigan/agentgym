@@ -136,7 +136,7 @@ async def run_agent(model_config):
     """Create and run the agent for the given model_config."""
     await reset_puzzle(None)
     agent = make_agent(model_config)
-    prompt = "Solve the Towers of Hanoi puzzle. Move all disks from tower A to tower C following the rules."
+    prompt = "Solve the Towers of Hanoi puzzle. Move all disks from first tower to last tower following the rules."
     result = await agent.run(prompt, deps=AgentTestContext())
     return result.output
 
